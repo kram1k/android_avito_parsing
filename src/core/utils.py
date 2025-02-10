@@ -1,4 +1,6 @@
-from uiautomator2 import Device, UiObject
+from time import sleep
+
+from uiautomator2 import Device, UiObject, Direction
 from core.constants import (
     SEARCH_VIEW_CONTAINER,
     TOOLBAR_CONTAINER,
@@ -9,10 +11,19 @@ from core.constants import (
     SUGGESTS_RECYCLER_VIEW,
     SEARCH_VIEW_ITEM,
     ICON_CONTAINER,
-    LINEAR_LAYOUT, 
+    LINEAR_LAYOUT,
     TEXT_VIEW,
     FILTER_BUTTON,
-    FILTERS_TEXT
+    FILTERS_TEXT,
+    CONTENT,
+    FRAME_LAYOUT,
+    TIME_TO_SCROLL,
+    FILTERS_SCREEN_ROOT,
+    TO_DATE,
+    DESIGN_ITEM_TITLE,
+    WAIT_SCROLL_DONE,
+    ID_TEXT_VIEW,
+    ACCEPT_BUTTON
 )
 
 
@@ -49,3 +60,33 @@ def get_button_search(device: Device) -> UiObject:
         className=TEXT_VIEW,
         resourceId=FILTERS_TEXT
     )
+
+
+def get_cords_swipe_down(device: Device) -> None:
+    device(resourceId=CONTENT, className=FRAME_LAYOUT) \
+        .swipe(direction=Direction.UP, steps=TIME_TO_SCROLL)
+    device(resourceId=CONTENT, className=FRAME_LAYOUT) \
+        .swipe(direction=Direction.UP, steps=TIME_TO_SCROLL)
+    device(resourceId=CONTENT, className=FRAME_LAYOUT) \
+        .swipe(direction=Direction.UP, steps=TIME_TO_SCROLL)
+    sleep(WAIT_SCROLL_DONE)
+
+
+def get_toggle_date_button(device: Device) -> UiObject:
+    return device(resourceId=FILTERS_SCREEN_ROOT, className=FRAME_LAYOUT) \
+        .child_by_text(
+            txt=TO_DATE,
+            resourceId=DESIGN_ITEM_TITLE,
+            allow_scroll_search=True,
+            className=TEXT_VIEW
+        )
+
+
+def get_accept_button(device: Device) -> UiObject:
+    return device(resourceId=FILTERS_SCREEN_ROOT, className=FRAME_LAYOUT) \
+        .child_by_text(
+            txt=ACCEPT_BUTTON,
+            resourceId=ID_TEXT_VIEW,
+            allow_scroll_search=True,
+            className=TEXT_VIEW
+        )
