@@ -1,3 +1,4 @@
+import logging
 from time import sleep
 
 from uiautomator2 import Device, UiObject, Direction
@@ -26,67 +27,123 @@ from core.constants import (
     ACCEPT_BUTTON
 )
 
+logger_2 = logging.getLogger(__name__)
+logger_2.setLevel(logging.INFO)
+handler2 = logging.FileHandler(f"{__name__}.log", mode='w')
+formatter2 = logging.Formatter(
+    "%(name)s %(asctime)s %(levelname)s %(message)s"
+)
+handler2.setFormatter(formatter2)
+logger_2.addHandler(handler2)
+
 
 def write_xml(device: Device, xml: str) -> None:
-    with open(xml, 'w', encoding=UTF) as f:
-        f.write(device.dump_hierarchy())
-        f.close
+    """Запись элементов экрана в формате xml в файл"""
+
+    logging.info("Запись файла")
+    try:
+        with open(xml, "w", encoding=UTF) as f:
+            f.write(device.dump_hierarchy())
+            f.close
+    except Exception as error:
+        logging.error(
+            f"Не удалось записать dump в файл {xml}, ошибка {error}"
+        )
 
 
 def get_search_container(device: Device) -> UiObject:
-    return device(resourceId=SEARCH_VIEW_CONTAINER) \
-        .child(resourceId=TOOLBAR_CONTAINER) \
-        .child(resourceId=CONTAINER) \
-        .child(resourceId=INPUT_VIEW) \
-        .child(text=RU_SEARCH_TEXT)
+    """Получение формы для ввода запроса для поиска"""
+
+    logging.info("Поиск формы поиска")
+    try:
+        return device(resourceId=SEARCH_VIEW_CONTAINER) \
+            .child(resourceId=TOOLBAR_CONTAINER) \
+            .child(resourceId=CONTAINER) \
+            .child(resourceId=INPUT_VIEW) \
+            .child(text=RU_SEARCH_TEXT)
+    except Exception as error:
+        logging.error(f"Не удалось найти контейнер, ошибка {error}")
 
 
 def get_button_container(device: Device) -> UiObject:
-    return device(resourceId=SEARCH_VIEW_CONTAINER) \
-        .child(resourceId=TOOLBAR_CONTAINER) \
-        .child(resourceId=CONTAINER) \
-        .child(resourceId=INPUT_VIEW)
+    """Получение кнопки input для поиска"""
+
+    logging.info("Поиск кнопки поиска")
+    try:
+        return device(resourceId=SEARCH_VIEW_CONTAINER) \
+            .child(resourceId=TOOLBAR_CONTAINER) \
+            .child(resourceId=CONTAINER) \
+            .child(resourceId=INPUT_VIEW)
+    except Exception as error:
+        logging.error(f"Не удалось найти поле, ошибка {error}")
 
 
 def get_search_list_item(device: Device) -> UiObject:
-    return device(resourceId=SUGGESTS_RECYCLER_VIEW) \
-        .child(resourceId=SEARCH_VIEW_ITEM) \
-        .child(resourceId=ICON_CONTAINER, className=LINEAR_LAYOUT)
+    """Получение элемента из поисковой выдачи"""
+
+    logging.info("Поиск элемента в поисковой выдачи")
+    try:
+        return device(resourceId=SUGGESTS_RECYCLER_VIEW) \
+            .child(resourceId=SEARCH_VIEW_ITEM) \
+            .child(resourceId=ICON_CONTAINER, className=LINEAR_LAYOUT)
+    except Exception as error:
+        logging.error(f"Не удалось найти элемент, ошибка {error}")
 
 
-def get_button_search(device: Device) -> UiObject:
-    return device(
-        text=FILTER_BUTTON,
-        className=TEXT_VIEW,
-        resourceId=FILTERS_TEXT
-    )
+def get_button_filter(device: Device) -> UiObject:
+    """Получение кнопки для настройки фильтрации"""
+
+    logging.info("Поиск кнопки фильтра")
+    try:
+        return device(
+            text=FILTER_BUTTON,
+            className=TEXT_VIEW,
+            resourceId=FILTERS_TEXT
+        )
+    except Exception as error:
+        logging.error(f"Не удалось найти кнопку, ошибка {error}")
 
 
 def get_cords_swipe_down(device: Device) -> None:
+    """Прокрутка экрана до нужного компонента"""
+    logging.info("Начало оперции прокрутки...")
     device(resourceId=CONTENT, className=FRAME_LAYOUT) \
         .swipe(direction=Direction.UP, steps=TIME_TO_SCROLL)
     device(resourceId=CONTENT, className=FRAME_LAYOUT) \
         .swipe(direction=Direction.UP, steps=TIME_TO_SCROLL)
     device(resourceId=CONTENT, className=FRAME_LAYOUT) \
         .swipe(direction=Direction.UP, steps=TIME_TO_SCROLL)
+    logging.info("Ожидание ее окончания")
     sleep(WAIT_SCROLL_DONE)
 
 
 def get_toggle_date_button(device: Device) -> UiObject:
-    return device(resourceId=FILTERS_SCREEN_ROOT, className=FRAME_LAYOUT) \
-        .child_by_text(
-            txt=TO_DATE,
-            resourceId=DESIGN_ITEM_TITLE,
-            allow_scroll_search=True,
-            className=TEXT_VIEW
+    """Измение сортировки на режим 'По дате'"""
+    logging.info(f"Поиск кнопки для фильтрации: {TO_DATE}")
+    try:
+        return device(resourceId=FILTERS_SCREEN_ROOT, className=FRAME_LAYOUT) \
+            .child_by_text(
+                txt=TO_DATE,
+                resourceId=DESIGN_ITEM_TITLE,
+                allow_scroll_search=True,
+                className=TEXT_VIEW
+            )
+    except Exception as error:
+        logging.error(
+            f"Не удалось найти кнопку-переключатель {TO_DATE}, ошибка {error}"
         )
 
 
 def get_accept_button(device: Device) -> UiObject:
-    return device(resourceId=FILTERS_SCREEN_ROOT, className=FRAME_LAYOUT) \
-        .child_by_text(
-            txt=ACCEPT_BUTTON,
-            resourceId=ID_TEXT_VIEW,
-            allow_scroll_search=True,
-            className=TEXT_VIEW
-        )
+    """Подтверждение изменений в филтре поиска"""
+    logging.info("Поиск кнопки подтверждения изменений")
+    try:
+        return device(resourceId=FILTERS_SCREEN_ROOT, className=FRAME_LAYOUT) \
+            .child_by_text(
+                txt=ACCEPT_BUTTON,
+                resourceId=ID_TEXT_VIEW,
+                allow_scroll_search=True,
+                className=TEXT_VIEW
+            )
+    except Exception as error:
+        logging.error(f"Не удалось найти кнопку: {error}")
