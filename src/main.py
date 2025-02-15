@@ -1,18 +1,31 @@
 import logging
-import sys
+from time import sleep
 
 from uiautomator2 import connect
 from core.utils import (
     write_xml,
+    get_note_button,
+    get_url_from_note,
     get_button_container,
     get_search_container,
     get_search_list_item,
     get_button_filter,
     get_cords_swipe_down,
     get_toggle_date_button,
-    get_accept_button
+    get_accept_button,
+    swipe_screen,
+    get_new_item,
+    get_share_button
 )
-from core.constants import DELAY, AVITO, SEARCH_TEXT
+from core.constants import (
+    DELAY_WIDGET,
+    DELAY_SCREEN,
+    AVITO,
+    SEARCH_TEXT,
+    FIRST_SCREEN,
+    SECOND_SCREEN
+)
+from core.xmlparse import create_list
 
 
 def main():
@@ -26,7 +39,7 @@ def main():
     logger_1.info(f"Testing the custom logger for module {__name__}...")
 
     phone = connect()
-    phone.implicitly_wait(DELAY)
+    phone.implicitly_wait(DELAY_WIDGET)
     phone.app_start(AVITO, use_monkey=True)
     get_button_container(phone).click()
     get_search_container(phone).set_text(SEARCH_TEXT)
@@ -34,19 +47,32 @@ def main():
     get_button_filter(phone).click()
     get_cords_swipe_down(phone)
     get_toggle_date_button(phone).click()
+    sleep(2)
     get_accept_button(phone).click()
-    
-    # new_elements = 0
-    # first_screen: list[str] = []
-    # second_screen: list[str] = []
-    # while new_elements <= 5:
-    #     if first_screen and second_screen:
-    #         ...
-    #     else:
-    #         ...
-    # write_xml(phone, "new_list_hierarchy.xml")
-    # fx=h_1, fy=w_1, tx=h_2, ty=w_2,
-    #     .child_by_text(txt="По дате", resourceId="com.avito.android:id/design_item_title", allow_scroll_search=True, className="android.widget.TextView")
+
+    new_elements = 0
+    first_screen: list[str] = []
+    second_screen: list[str] = []
+    while new_elements <= 1:
+        if first_screen and second_screen:
+            first_screen = create_list(write_xml(phone, FIRST_SCREEN))
+            sleep(DELAY_SCREEN)
+            swipe_screen(phone)
+            second_screen = create_list(write_xml(phone, SECOND_SCREEN))
+        else:
+            if second_screen == first_screen:
+                second_screen = first_screen
+                first_screen.clear()
+            else:
+                get_new_item(phone, second_screen[0]).click()
+                get_share_button(phone).click()
+                get_note_button(phone).click()
+                print(get_url_from_note(phone))
+                new_elements += 1
+                phone.press.back()
+                phone.press.back()
+    # write_xml(phone, "hierarchy.xml")
+
 
 
 

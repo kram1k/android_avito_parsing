@@ -24,7 +24,9 @@ from core.constants import (
     DESIGN_ITEM_TITLE,
     WAIT_SCROLL_DONE,
     ID_TEXT_VIEW,
-    ACCEPT_BUTTON
+    ACCEPT_BUTTON,
+    RECYCLER_VIEW_ID,
+    RECYCLER_VIEW_CLASS
 )
 
 logger_2 = logging.getLogger(__name__)
@@ -147,3 +149,47 @@ def get_accept_button(device: Device) -> UiObject:
             )
     except Exception as error:
         logging.error(f"Не удалось найти кнопку: {error}")
+
+
+def swipe_screen(device: Device):
+    device().swipe(direction=Direction.DOWN)
+
+
+def get_new_item(device: Device, text: str) -> UiObject:
+    """Получение нового объекта"""
+    logging.info("Поиск нового объекта")
+    try:
+        return device(
+            resourceId=RECYCLER_VIEW_ID,
+            className=RECYCLER_VIEW_CLASS).child_by_text(txt=text)
+    except Exception as error:
+        logging.error(f"Не удалось найти новый объект, ошибка: {error}")
+
+
+def get_share_button(device: Device) -> UiObject:
+    """Получение кнопки 'Поделится'"""
+    logging.info("Поиск кнопки 'Поделится'")
+    try:
+        return device(
+            resourceId="com.avito.android:id/menu_share",
+            className="android.widget.Button"
+        )
+    except Exception as error:
+        logging.error(f"Не удалось найти кнопку 'Поделится', ошибка: {error}")
+
+
+def get_note_button(device: Device) -> UiObject:
+    """Получение кнопки 'Заметки'"""
+    logging.info("Поиск кнопки 'Заметки'")
+    try:
+        return device(
+            text='Заметки',
+            resourceId="android:id/text1",
+            className="android.widget.TextView"
+        )
+    except Exception as error:
+        logging.error(f"Не удалось найти кнопку 'Заметки', ошибка: {error}")
+
+
+def get_url_from_note(device: Device) -> str:
+    return device(resourceId="com.miui.notes:id/rich_editor", className="android.widget.EditText").info['text']

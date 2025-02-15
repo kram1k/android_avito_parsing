@@ -1,7 +1,8 @@
 
-DELAY = 25.0
+DELAY_WIDGET = 25.0
+DELAY_SCREEN = 30.0
 TIME_TO_SCROLL = 10
-WAIT_SCROLL_DONE = 4
+WAIT_SCROLL_DONE = 5
 
 UTF = "utf-8"
 AVITO = "com.avito.android"
@@ -31,3 +32,14 @@ DESIGN_ITEM_TITLE = "com.avito.android:id/design_item_title"
 
 ID_TEXT_VIEW = "com.avito.android:id/text_view"
 ACCEPT_BUTTON = "Показать больше 1 тыс. объявлений"
+
+FIRST_SCREEN = "first_screen.xml"
+SECOND_SCREEN = "second_screen.xml"
+TEXT = "text"
+NODE = "node"
+
+RECYCLER_VIEW_ID = "com.avito.android:id/recycler_view"
+RECYCLER_VIEW_CLASS = "androidx.recyclerview.widget.RecyclerView"
+
+BUTTON_CLASS = "android.widget.Button"
+MENU_SHARE_ID = "com.avito.android:id/menu_share"

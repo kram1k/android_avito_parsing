@@ -1,18 +1,21 @@
 # from time import sleep
+import logging
 from xml.dom import minidom
 
-from constants import UTF
-
-with open("first_screen.xml", 'r', encoding=UTF) as f:
-    dom = minidom.parse("first_screen.xml")
-    nodes = dom.getElementsByTagName("node")
-    arr = []
-    for text in nodes:
-        q = text.getAttribute("text")
-        if q != '':
-            arr.append(q)
-    print(arr)
+from .constants import (
+    NODE,
+    TEXT,
+)
 
 
-def create_two_lists():
-    ...
+def create_list(file_name: str) -> list[str] | None:
+    """Создание массива строк экрана"""
+    logging.info("Создание массивa")
+    try:
+        nodes = minidom.parse(file_name).getElementsByTagName(NODE)
+        return [
+            x.getAttribute(TEXT) for x in nodes if x.getAttribute(TEXT) != ''
+            ]
+    except Exception as error:
+        logging.error(f"Не получилось создать массив строк, ошибка: {error}")
+        return None
