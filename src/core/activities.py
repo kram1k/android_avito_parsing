@@ -2,32 +2,8 @@ import logging
 from time import sleep
 
 from uiautomator2 import Device, UiObject, Direction
-from core.constants import (
-    SEARCH_VIEW_CONTAINER,
-    TOOLBAR_CONTAINER,
-    CONTAINER,
-    INPUT_VIEW,
-    RU_SEARCH_TEXT,
-    UTF,
-    SUGGESTS_RECYCLER_VIEW,
-    SEARCH_VIEW_ITEM,
-    ICON_CONTAINER,
-    LINEAR_LAYOUT,
-    TEXT_VIEW,
-    FILTER_BUTTON,
-    FILTERS_TEXT,
-    CONTENT,
-    FRAME_LAYOUT,
-    TIME_TO_SCROLL,
-    FILTERS_SCREEN_ROOT,
-    TO_DATE,
-    DESIGN_ITEM_TITLE,
-    WAIT_SCROLL_DONE,
-    ID_TEXT_VIEW,
-    ACCEPT_BUTTON,
-    RECYCLER_VIEW_ID,
-    RECYCLER_VIEW_CLASS
-)
+
+from .constants import StrEnum, IntEnum
 
 logger_2 = logging.getLogger(__name__)
 logger_2.setLevel(logging.INFO)
@@ -39,32 +15,18 @@ handler2.setFormatter(formatter2)
 logger_2.addHandler(handler2)
 
 
-def write_xml(device: Device, xml: str) -> None:
+def write_xml(device: Device, file: str) -> None:
     """Запись элементов экрана в формате xml в файл"""
 
     logging.info("Запись файла")
     try:
-        with open(xml, "w", encoding=UTF) as f:
+        with open(file, "w", encoding=StrEnum.UTF) as f:
             f.write(device.dump_hierarchy())
             f.close
     except Exception as error:
         logging.error(
-            f"Не удалось записать dump в файл {xml}, ошибка {error}"
+            f"Не удалось записать dump в файл {file}, ошибка {error}"
         )
-
-
-def get_search_container(device: Device) -> UiObject:
-    """Получение формы для ввода запроса для поиска"""
-
-    logging.info("Поиск формы поиска")
-    try:
-        return device(resourceId=SEARCH_VIEW_CONTAINER) \
-            .child(resourceId=TOOLBAR_CONTAINER) \
-            .child(resourceId=CONTAINER) \
-            .child(resourceId=INPUT_VIEW) \
-            .child(text=RU_SEARCH_TEXT)
-    except Exception as error:
-        logging.error(f"Не удалось найти контейнер, ошибка {error}")
 
 
 def get_button_container(device: Device) -> UiObject:
@@ -72,10 +34,11 @@ def get_button_container(device: Device) -> UiObject:
 
     logging.info("Поиск кнопки поиска")
     try:
-        return device(resourceId=SEARCH_VIEW_CONTAINER) \
-            .child(resourceId=TOOLBAR_CONTAINER) \
-            .child(resourceId=CONTAINER) \
-            .child(resourceId=INPUT_VIEW)
+        return device(
+            text=StrEnum.RU_SEARCH_TEXT,
+            resourceId="",
+            className=StrEnum.CLASS_EDIT_TEXT
+        )
     except Exception as error:
         logging.error(f"Не удалось найти поле, ошибка {error}")
 
@@ -85,9 +48,11 @@ def get_search_list_item(device: Device) -> UiObject:
 
     logging.info("Поиск элемента в поисковой выдачи")
     try:
-        return device(resourceId=SUGGESTS_RECYCLER_VIEW) \
-            .child(resourceId=SEARCH_VIEW_ITEM) \
-            .child(resourceId=ICON_CONTAINER, className=LINEAR_LAYOUT)
+        return device(
+            text=StrEnum.SEARCH_TEXT,
+            resourceId=StrEnum.ID_SUGGEST_TITLE,
+            className=StrEnum.CLASS_TEXT_VIEW
+        )
     except Exception as error:
         logging.error(f"Не удалось найти элемент, ошибка {error}")
 
@@ -98,9 +63,9 @@ def get_button_filter(device: Device) -> UiObject:
     logging.info("Поиск кнопки фильтра")
     try:
         return device(
-            text=FILTER_BUTTON,
-            className=TEXT_VIEW,
-            resourceId=FILTERS_TEXT
+            text=StrEnum.FILTER_BUTTON,
+            className=StrEnum.CLASS_TEXT_VIEW,
+            resourceId=StrEnum.ID_FILTERS_TEXT
         )
     except Exception as error:
         logging.error(f"Не удалось найти кнопку, ошибка {error}")
@@ -109,30 +74,32 @@ def get_button_filter(device: Device) -> UiObject:
 def get_cords_swipe_down(device: Device) -> None:
     """Прокрутка экрана до нужного компонента"""
     logging.info("Начало оперции прокрутки...")
-    device(resourceId=CONTENT, className=FRAME_LAYOUT) \
-        .swipe(direction=Direction.UP, steps=TIME_TO_SCROLL)
-    device(resourceId=CONTENT, className=FRAME_LAYOUT) \
-        .swipe(direction=Direction.UP, steps=TIME_TO_SCROLL)
-    device(resourceId=CONTENT, className=FRAME_LAYOUT) \
-        .swipe(direction=Direction.UP, steps=TIME_TO_SCROLL)
+    for _ in range(IntEnum.COUNT_SCROLLS):
+        device(
+            resourceId=StrEnum.ID_CONTENT,
+            className=StrEnum.CLASS_FRAME_LAYOUT) \
+            .swipe(direction=Direction.UP, steps=IntEnum.TIME_TO_SCROLL)
     logging.info("Ожидание ее окончания")
-    sleep(WAIT_SCROLL_DONE)
+    sleep(IntEnum.WAIT_SCROLL_DONE)
 
 
 def get_toggle_date_button(device: Device) -> UiObject:
     """Измение сортировки на режим 'По дате'"""
-    logging.info(f"Поиск кнопки для фильтрации: {TO_DATE}")
+    logging.info(f"Поиск кнопки для фильтрации: {StrEnum.TO_DATE}")
     try:
-        return device(resourceId=FILTERS_SCREEN_ROOT, className=FRAME_LAYOUT) \
+        return device(
+            resourceId=StrEnum.ID_FILTERS_SCREEN_ROOT,
+            className=StrEnum.CLASS_FRAME_LAYOUT) \
             .child_by_text(
-                txt=TO_DATE,
-                resourceId=DESIGN_ITEM_TITLE,
+                txt=StrEnum.TO_DATE,
+                resourceId=StrEnum.ID_DESIGN_ITEM_TITLE,
                 allow_scroll_search=True,
-                className=TEXT_VIEW
+                className=StrEnum.CLASS_TEXT_VIEW
             )
     except Exception as error:
         logging.error(
-            f"Не удалось найти кнопку-переключатель {TO_DATE}, ошибка {error}"
+            f"Не удалось найти кнопку-переключатель {StrEnum.TO_DATE}",
+            f" ошибка {error}"
         )
 
 
@@ -140,13 +107,12 @@ def get_accept_button(device: Device) -> UiObject:
     """Подтверждение изменений в филтре поиска"""
     logging.info("Поиск кнопки подтверждения изменений")
     try:
-        return device(resourceId=FILTERS_SCREEN_ROOT, className=FRAME_LAYOUT) \
-            .child_by_text(
-                txt=ACCEPT_BUTTON,
-                resourceId=ID_TEXT_VIEW,
-                allow_scroll_search=True,
-                className=TEXT_VIEW
+        return device(
+                text=StrEnum.ACCEPT_BUTTON,
+                resourceId=StrEnum.ID_TEXT_VIEW,
+                className=StrEnum.CLASS_TEXT_VIEW
             )
+
     except Exception as error:
         logging.error(f"Не удалось найти кнопку: {error}")
 
@@ -160,8 +126,10 @@ def get_new_item(device: Device, text: str) -> UiObject:
     logging.info("Поиск нового объекта")
     try:
         return device(
-            resourceId=RECYCLER_VIEW_ID,
-            className=RECYCLER_VIEW_CLASS).child_by_text(txt=text)
+            resourceId=StrEnum.ID_RECYCLER_VIEW_ID,
+            className=StrEnum.CLASS_RECYCLER_VIEW_CLASS).child_by_text(
+                txt=text
+            )
     except Exception as error:
         logging.error(f"Не удалось найти новый объект, ошибка: {error}")
 

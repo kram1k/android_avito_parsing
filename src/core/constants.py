@@ -1,45 +1,62 @@
+from enum import Enum, unique
 
-DELAY_WIDGET = 25.0
-DELAY_SCREEN = 30.0
-TIME_TO_SCROLL = 10
-WAIT_SCROLL_DONE = 5
 
-UTF = "utf-8"
-AVITO = "com.avito.android"
-SEARCH_TEXT = "littlest pet shop"
-# id and class xml
-SEARCH_VIEW_CONTAINER = "com.avito.android:id/search_view_container"
-TOOLBAR_CONTAINER = "com.avito.android:id/toolbar_container"
-CONTAINER = "com.avito.android:id/container"
-RU_SEARCH_TEXT = "Поиск во всех регионах"
-INPUT_VIEW = "com.avito.android:id/input_view"
+@unique
+class FloatEnum(float, Enum):
+    DELAY_WIDGET = 25.0
+    DELAY_SCREEN = 30.0
 
-SUGGESTS_RECYCLER_VIEW = "com.avito.android:id/suggests_recycler_view"
-SEARCH_VIEW_ITEM = "com.avito.android:id/search_view_item"
-ICON_CONTAINER = "com.avito.android:id/icon_container"
-LINEAR_LAYOUT = "android.widget.LinearLayout"
 
-FILTER_BUTTON = "Фильтры"
-TEXT_VIEW = "android.widget.TextView"
-FILTERS_TEXT = "com.avito.android:id/filters_text"
+@unique
+class IntEnum(int, Enum):
+    TIME_TO_SCROLL = 10
+    WAIT_SCROLL_DONE = 5
+    COUNT_SCROLLS = 3
 
-CONTENT = "android:id/content"
-FRAME_LAYOUT = "android.widget.FrameLayout"
 
-FILTERS_SCREEN_ROOT = "com.avito.android:id/filters_screen_root"
-TO_DATE = "По дате"
-DESIGN_ITEM_TITLE = "com.avito.android:id/design_item_title"
+@unique
+class StrEnum(str, Enum):
+    UTF = "utf-8"
 
-ID_TEXT_VIEW = "com.avito.android:id/text_view"
-ACCEPT_BUTTON = "Показать больше 1 тыс. объявлений"
+    # resourceId
+    ID_SEARCH_VIEW_CONTAINER = "com.avito.android:id/search_view_container"
+    ID_TOOLBAR_CONTAINER = "com.avito.android:id/toolbar_container"
+    ID_CONTAINER = "com.avito.android:id/container"
+    ID_INPUT_VIEW = "com.avito.android:id/input_view"
+    ID_SUGGESTS_RECYCLER_VIEW = "com.avito.android:id/suggests_recycler_view"
+    ID_SEARCH_VIEW_ITEM = "com.avito.android:id/search_view_item"
+    ID_ICON_CONTAINER = "com.avito.android:id/icon_container"
+    ID_FILTERS_TEXT = "com.avito.android:id/filters_text"
+    ID_CONTENT = "android:id/content"
+    ID_FILTERS_SCREEN_ROOT = "com.avito.android:id/filters_screen_root"
+    ID_DESIGN_ITEM_TITLE = "com.avito.android:id/design_item_title"
+    ID_TEXT_VIEW = "com.avito.android:id/text_view"
+    ID_RECYCLER_VIEW_ID = "com.avito.android:id/recycler_view"
+    ID_MENU_SHARE_ID = "com.avito.android:id/menu_share"
+    ID_SUGGEST_TITLE = "com.avito.android:id/suggest_title"
 
-FIRST_SCREEN = "first_screen.xml"
-SECOND_SCREEN = "second_screen.xml"
-TEXT = "text"
-NODE = "node"
+    # className
+    CLASS_TEXT_VIEW = "android.widget.TextView"
+    CLASS_LINEAR_LAYOUT = "android.widget.LinearLayout"
+    CLASS_FRAME_LAYOUT = "android.widget.FrameLayout"
+    CLASS_RECYCLER_VIEW_CLASS = "androidx.recyclerview.widget.RecyclerView"
+    CLASS_BUTTON_CLASS = "android.widget.Button"
+    CLASS_EDIT_TEXT = "android.widget.EditText"
 
-RECYCLER_VIEW_ID = "com.avito.android:id/recycler_view"
-RECYCLER_VIEW_CLASS = "androidx.recyclerview.widget.RecyclerView"
+    # screen name constants
+    FIRST_SCREEN = "first_screen.xml"
+    SECOND_SCREEN = "second_screen.xml"
 
-BUTTON_CLASS = "android.widget.Button"
-MENU_SHARE_ID = "com.avito.android:id/menu_share"
+    # constants for parse xml files
+    TEXT = "text"
+    NODE = "node"
+
+    # ru Develop constants
+    RU_SEARCH_TEXT = "Поиск во всех регионах"
+    FILTER_BUTTON = "Фильтры"
+    TO_DATE = "По дате"
+    ACCEPT_BUTTON = "Показать больше 1 тыс. объявлений"
+
+    # en Develop constants
+    AVITO = "com.avito.android"
+    SEARCH_TEXT = "littlest pet shop"
