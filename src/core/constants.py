@@ -12,40 +12,47 @@ class IntEnum(int, Enum):
     TIME_TO_SCROLL = 10
     WAIT_SCROLL_DONE = 5
     COUNT_SCROLLS = 3
+    WAIT_APP_START = 2
+
+
+@unique
+class XmlIdEnum(str, Enum):
+    SEARCH_VIEW_CONTAINER = "com.avito.android:id/search_view_container"
+    TOOLBAR_CONTAINER = "com.avito.android:id/toolbar_container"
+    CONTAINER = "com.avito.android:id/container"
+    INPUT_VIEW = "com.avito.android:id/input_view"
+    SUGGESTS_RECYCLER_VIEW = "com.avito.android:id/suggests_recycler_view"
+    SEARCH_VIEW_ITEM = "com.avito.android:id/search_view_item"
+    ICON_CONTAINER = "com.avito.android:id/icon_container"
+    FILTERS_TEXT = "com.avito.android:id/filters_text"
+    CONTENT = "android:id/content"
+    FILTERS_SCREEN_ROOT = "com.avito.android:id/filters_screen_root"
+    DESIGN_ITEM_TITLE = "com.avito.android:id/design_item_title"
+    TEXT_VIEW = "com.avito.android:id/text_view"
+    RECYCLER_VIEW = "com.avito.android:id/recycler_view"
+    MENU_SHARE = "com.avito.android:id/menu_share"
+    SUGGEST_TITLE = "com.avito.android:id/suggest_title"
+    MAIN_TEXT = "com.avito.android:id/mainText"
+
+
+@unique
+class XmlClassEnum(str, Enum):
+    TEXT_VIEW = "android.widget.TextView"
+    LINEAR_LAYOUT = "android.widget.LinearLayout"
+    FRAME_LAYOUT = "android.widget.FrameLayout"
+    RECYCLER_VIEW = "androidx.recyclerview.widget.RecyclerView"
+    BUTTON = "android.widget.Button"
+    EDIT_TEXT = "android.widget.EditText"
 
 
 @unique
 class StrEnum(str, Enum):
     UTF = "utf-8"
 
-    # resourceId
-    ID_SEARCH_VIEW_CONTAINER = "com.avito.android:id/search_view_container"
-    ID_TOOLBAR_CONTAINER = "com.avito.android:id/toolbar_container"
-    ID_CONTAINER = "com.avito.android:id/container"
-    ID_INPUT_VIEW = "com.avito.android:id/input_view"
-    ID_SUGGESTS_RECYCLER_VIEW = "com.avito.android:id/suggests_recycler_view"
-    ID_SEARCH_VIEW_ITEM = "com.avito.android:id/search_view_item"
-    ID_ICON_CONTAINER = "com.avito.android:id/icon_container"
-    ID_FILTERS_TEXT = "com.avito.android:id/filters_text"
-    ID_CONTENT = "android:id/content"
-    ID_FILTERS_SCREEN_ROOT = "com.avito.android:id/filters_screen_root"
-    ID_DESIGN_ITEM_TITLE = "com.avito.android:id/design_item_title"
-    ID_TEXT_VIEW = "com.avito.android:id/text_view"
-    ID_RECYCLER_VIEW_ID = "com.avito.android:id/recycler_view"
-    ID_MENU_SHARE_ID = "com.avito.android:id/menu_share"
-    ID_SUGGEST_TITLE = "com.avito.android:id/suggest_title"
-
-    # className
-    CLASS_TEXT_VIEW = "android.widget.TextView"
-    CLASS_LINEAR_LAYOUT = "android.widget.LinearLayout"
-    CLASS_FRAME_LAYOUT = "android.widget.FrameLayout"
-    CLASS_RECYCLER_VIEW_CLASS = "androidx.recyclerview.widget.RecyclerView"
-    CLASS_BUTTON_CLASS = "android.widget.Button"
-    CLASS_EDIT_TEXT = "android.widget.EditText"
-
-    # screen name constants
+    # file names
     FIRST_SCREEN = "first_screen.xml"
     SECOND_SCREEN = "second_screen.xml"
+    RESULT_TXT = "links.txt"
 
     # constants for parse xml files
     TEXT = "text"
@@ -59,4 +66,7 @@ class StrEnum(str, Enum):
 
     # en Develop constants
     AVITO = "com.avito.android"
+    URL_APP = "com.example.app"
     SEARCH_TEXT = "littlest pet shop"
+    TARGET = r"littlest pet shop|lps|лпс|стоячки|Littlest Pet Shop|lps стоячка|Littlest pet shop|Littlest Pet shop|"
+    
