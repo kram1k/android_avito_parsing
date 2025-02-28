@@ -5,6 +5,7 @@ from enum import Enum, unique
 class FloatEnum(float, Enum):
     DELAY_WIDGET = 25.0
     DELAY_SCREEN = 30.0
+    DURACTION_LONG_CLICK = 2.0
 
 
 @unique
@@ -12,7 +13,8 @@ class IntEnum(int, Enum):
     TIME_TO_SCROLL = 10
     WAIT_SCROLL_DONE = 5
     COUNT_SCROLLS = 3
-    WAIT_APP_START = 2
+    WAIT_APP_START = 4
+    WAIT_END_OPERTION = 2
 
 
 @unique
@@ -33,6 +35,7 @@ class XmlIdEnum(str, Enum):
     MENU_SHARE = "com.avito.android:id/menu_share"
     SUGGEST_TITLE = "com.avito.android:id/suggest_title"
     MAIN_TEXT = "com.avito.android:id/mainText"
+    TEXT1 = "android:id/text1"
 
 
 @unique
@@ -46,10 +49,18 @@ class XmlClassEnum(str, Enum):
 
 
 @unique
+class XpathEnum(str, Enum):
+    PASTE = '//*[@content-desc="Paste"]'
+    SELECT_ALL = '//*[@content-desc="Select all"]'
+    KEY_POS_DEL = '//*[@resource-id="com.google.android.inputmethod.latin:id'
+    '/key_pos_del"]'
+
+
 class StrEnum(str, Enum):
     UTF = "utf-8"
 
     # file names
+    DEV_XML_FILE = "hierarchy.xml"
     FIRST_SCREEN = "first_screen.xml"
     SECOND_SCREEN = "second_screen.xml"
     RESULT_TXT = "links.txt"
@@ -63,10 +74,12 @@ class StrEnum(str, Enum):
     FILTER_BUTTON = "Фильтры"
     TO_DATE = "По дате"
     ACCEPT_BUTTON = "Показать больше 1 тыс. объявлений"
+    COPY_BUTTON = 'Копировать'
 
     # en Develop constants
     AVITO = "com.avito.android"
     URL_APP = "com.example.app"
     SEARCH_TEXT = "littlest pet shop"
+    DEVICE_INFO_TEXT = 'text'
     TARGET = r"littlest pet shop|lps|лпс|стоячки|Littlest Pet Shop|lps стоячка|Littlest pet shop|Littlest Pet shop|"
-    
+
