@@ -15,6 +15,7 @@ class IntEnum(int, Enum):
     COUNT_SCROLLS = 3
     WAIT_APP_START = 4
     WAIT_END_OPERTION = 2
+    SWIPE_STEP = 1
 
 
 @unique
@@ -36,6 +37,9 @@ class XmlIdEnum(str, Enum):
     SUGGEST_TITLE = "com.avito.android:id/suggest_title"
     MAIN_TEXT = "com.avito.android:id/mainText"
     TEXT1 = "android:id/text1"
+    ADVERT_GRID_ROOT = "com.avito.android:id/advert_grid_root"
+    ADVERT_NUMBER = "com.avito.android:id/advert_number"
+    ADVERT_STATS = "com.avito.android:id/advert_stats"
 
 
 @unique
@@ -82,4 +86,4 @@ class StrEnum(str, Enum):
     SEARCH_TEXT = "littlest pet shop"
     DEVICE_INFO_TEXT = 'text'
     TARGET = r"littlest pet shop|lps|лпс|стоячки|Littlest Pet Shop|lps стоячка|Littlest pet shop|Littlest Pet shop|"
-
+    BACK = "back"

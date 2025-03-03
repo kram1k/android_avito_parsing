@@ -2,7 +2,7 @@ import logging
 
 from uiautomator2 import Device, UiObject
 
-from .constants import (
+from ..constants import (
     StrEnum, XmlIdEnum,
     XmlClassEnum, FloatEnum,
     XpathEnum
@@ -83,7 +83,7 @@ def long_click_to_edit_text(device: Device):
         logging.error(f"Не удалось нажать на 'Измение текста', ошибка {error}")
 
 
-def click_paste_url_in_input(device: Device) -> None:
+def click_paste_url_in_input(device: Device):
     """Нажатие на кнопку 'Вставить'"""
     logging.info(click_paste_url_in_input.__doc__)
     try:
@@ -92,7 +92,7 @@ def click_paste_url_in_input(device: Device) -> None:
         logging.error(f"Не удалось вставить URL, ошибка {error}")
 
 
-def click_select_all_url(device: Device) -> None:
+def click_select_all_url(device: Device):
     """Нажатие на кнопку 'Выделит все'"""
     logging.info(click_select_all_url.__doc__)
     try:
@@ -101,10 +101,24 @@ def click_select_all_url(device: Device) -> None:
         logging.error(f"Не удалось выделить весть текст, ошибка {error}")
 
 
-def click_delete_url_in_input(device: Device) -> None:
+def click_delete_url_in_input(device: Device):
     """Удаление URL из виджета ''Измение текста'"""
     logging.info(click_delete_url_in_input.__doc__)
     try:
         return device.xpath(XpathEnum.KEY_POS_DEL).click()
     except Exception as error:
         logging.error(f"Не удалось удалить URL, ошибка {error}")
+
+
+def click_to_announcement(device: Device, idx: int):
+    """Нажатие на обьвление"""
+    logging.info(click_to_announcement.__doc__)
+    try:
+        return device(
+            index=str(idx),
+            resourceId=XmlIdEnum.ADVERT_GRID_ROOT,
+            className=XmlClassEnum.FRAME_LAYOUT).click()
+    except Exception as error:
+        logging.error(
+            f"Не удалось нажать на обьявление {idx + 1}, ошибка {error}"
+        )

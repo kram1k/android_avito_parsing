@@ -1,13 +1,19 @@
 import logging
+from time import sleep
 
-from uiautomator2 import Device, UiObject
+from uiautomator2 import Device, UiObject, Direction
 
-from .constants import (
+from ..constants import (
     StrEnum, XmlIdEnum,
-    XmlClassEnum
+    XmlClassEnum, IntEnum
 )
 
 logger_activities = logging.getLogger(__name__)
+
+UniqueId = int
+TimePublish = str
+Views = int
+Advertisements = tuple[UniqueId, TimePublish, Views]
 
 
 def get_button_container(device: Device) -> UiObject:
@@ -71,3 +77,20 @@ def get_url_from_app_url(device: Device) -> str | None:
     except Exception as error:
         logging.error(f"Не удалось копировать URL, ошибка {error}")
         return None
+
+
+def get_info_about_ad(device: Device) -> Advertisements:
+    device().swipe(direction=Direction.UP, steps=IntEnum.SWIPE_STEP)
+    sleep(IntEnum.WAIT_END_OPERTION)
+    advert_number = device(
+        className=XmlClassEnum.TEXT_VIEW,
+        resourceId=XmlIdEnum.ADVERT_NUMBER
+    ).info[StrEnum.TEXT].split()
+    advert_stats = device(
+        className=XmlClassEnum.TEXT_VIEW,
+        resourceId=XmlIdEnum.ADVERT_STATS
+    ).info[StrEnum.TEXT].split()
+    device.press(StrEnum.BACK)
+    return (UniqueId(advert_number[1][1:]),
+            advert_number[-1],
+            Views(advert_stats[0]))

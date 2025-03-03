@@ -1,21 +1,26 @@
 from time import sleep
+from pprint import pprint
+from typing import Any
 
 from uiautomator2 import connect
 
-from core.activities import (
-    long_click_to_edit_text,
-    # write_xml,
-    paste_url_in_input,
-    get_url_from_app_url,
-    select_all_url,
-    delete_url_in_input
-)
-from core.utils import append_link_to_file
+from core.actions.clicks import click_to_announcement
+from core.actions.getters import get_info_about_ad, UniqueId, TimePublish, Views
 
 phone = connect()
-long_click_to_edit_text(phone)
-paste_url_in_input(phone)
-append_link_to_file(link=get_url_from_app_url(phone))
-long_click_to_edit_text(phone)
-select_all_url(phone)
-delete_url_in_input(phone)
+advertisements: dict[str, list[Any]] = {
+    "id": [],
+    "time_publish": [],
+    "views": []
+}
+
+new_targets = 0
+while new_targets < 1:
+    for index in range(2):
+        click_to_announcement(phone, index)
+        obj = get_info_about_ad(phone)
+        advertisements["id"].append(obj[0])
+        advertisements["time_publish"].append(obj[1])
+        advertisements["time_publish"].append(obj[2])
+    break
+print(advertisements)
