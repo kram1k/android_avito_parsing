@@ -12,8 +12,7 @@ logger_activities = logging.getLogger(__name__)
 
 UniqueId = int
 TimePublish = str
-Views = int
-Advertisements = tuple[UniqueId, TimePublish, Views]
+Advertisements = tuple[UniqueId, TimePublish]
 
 
 def get_button_container(device: Device) -> UiObject:
@@ -42,31 +41,6 @@ def get_new_item(device: Device, text: str) -> UiObject:
         logging.error(f"Не удалось найти новый объект, ошибка: {error}")
 
 
-def get_share_button(device: Device) -> UiObject:
-    """Получение кнопки 'Поделится'"""
-    logging.info(get_share_button.__doc__)
-    try:
-        return device(
-            resourceId=XmlIdEnum.MENU_SHARE,
-            className=XmlClassEnum.BUTTON,
-        )
-    except Exception as error:
-        logging.error(f"Не удалось найти кнопку 'Поделится', ошибка: {error}")
-
-
-def get_note_button(device: Device) -> UiObject:
-    """Получение кнопки 'Копировать'"""
-    logging.info(get_note_button.__doc__)
-    try:
-        return device(
-            text=StrEnum.COPY_BUTTON,
-            resourceId=XmlIdEnum.TEXT1,
-            className=XmlClassEnum.TEXT_VIEW,
-        )
-    except Exception as error:
-        logging.error(f"Не удалось найти кнопку 'Копировать', ошибка: {error}")
-
-
 def get_url_from_app_url(device: Device) -> str | None:
     """Получение URL из виджета 'Измение текста'"""
     logging.info(get_url_from_app_url.__doc__)
@@ -80,17 +54,16 @@ def get_url_from_app_url(device: Device) -> str | None:
 
 
 def get_info_about_ad(device: Device) -> Advertisements:
-    device().swipe(direction=Direction.UP, steps=IntEnum.SWIPE_STEP)
+    for _ in range(IntEnum.COUNT_SCROLLS):
+        device(
+            resourceId=XmlIdEnum.ADVERT_DETAILS_CONTAINER,
+            className=XmlClassEnum.FRAME_LAYOUT,
+        ).swipe(direction=Direction.UP, steps=IntEnum.SWIPE_STEP)
     sleep(IntEnum.WAIT_END_OPERTION)
     advert_number = device(
         className=XmlClassEnum.TEXT_VIEW,
         resourceId=XmlIdEnum.ADVERT_NUMBER
     ).info[StrEnum.TEXT].split()
-    advert_stats = device(
-        className=XmlClassEnum.TEXT_VIEW,
-        resourceId=XmlIdEnum.ADVERT_STATS
-    ).info[StrEnum.TEXT].split()
     device.press(StrEnum.BACK)
     return (UniqueId(advert_number[1][1:]),
-            advert_number[-1],
-            Views(advert_stats[0]))
+            advert_number[-1])

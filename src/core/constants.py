@@ -13,7 +13,7 @@ class IntEnum(int, Enum):
     TIME_TO_SCROLL = 10
     WAIT_SCROLL_DONE = 5
     COUNT_SCROLLS = 3
-    WAIT_APP_START = 4
+    WAIT_APP_START = 6
     WAIT_END_OPERTION = 2
     SWIPE_STEP = 1
 
@@ -40,6 +40,7 @@ class XmlIdEnum(str, Enum):
     ADVERT_GRID_ROOT = "com.avito.android:id/advert_grid_root"
     ADVERT_NUMBER = "com.avito.android:id/advert_number"
     ADVERT_STATS = "com.avito.android:id/advert_stats"
+    ADVERT_DETAILS_CONTAINER = "com.avito.android:id/advert_details_container"
 
 
 @unique
@@ -56,8 +57,7 @@ class XmlClassEnum(str, Enum):
 class XpathEnum(str, Enum):
     PASTE = '//*[@content-desc="Paste"]'
     SELECT_ALL = '//*[@content-desc="Select all"]'
-    KEY_POS_DEL = '//*[@resource-id="com.google.android.inputmethod.latin:id'
-    '/key_pos_del"]'
+    KEY_POS_DEL = '//*[@content-desc="Cut"]'
 
 
 class StrEnum(str, Enum):
@@ -77,7 +77,7 @@ class StrEnum(str, Enum):
     RU_SEARCH_TEXT = "Поиск во всех регионах"
     FILTER_BUTTON = "Фильтры"
     TO_DATE = "По дате"
-    ACCEPT_BUTTON = "Показать больше 1 тыс. объявлений"
+    ACCEPT_BUTTON = "Показать объявления"
     COPY_BUTTON = 'Копировать'
 
     # en Develop constants
@@ -85,5 +85,4 @@ class StrEnum(str, Enum):
     URL_APP = "com.example.app"
     SEARCH_TEXT = "littlest pet shop"
     DEVICE_INFO_TEXT = 'text'
-    TARGET = r"littlest pet shop|lps|лпс|стоячки|Littlest Pet Shop|lps стоячка|Littlest pet shop|Littlest Pet shop|"
     BACK = "back"

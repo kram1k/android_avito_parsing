@@ -59,7 +59,7 @@ def click_toggle_date_button(device: Device) -> UiObject:
 
 
 def click_accept_button(device: Device) -> UiObject:
-    """Подтверждение изменений в филтре поиска"""
+    """Подтверждение изменений в фильтре поиска"""
     logging.info(click_accept_button.__doc__)
     try:
         return device(
@@ -122,3 +122,28 @@ def click_to_announcement(device: Device, idx: int):
         logging.error(
             f"Не удалось нажать на обьявление {idx + 1}, ошибка {error}"
         )
+
+
+def click_share_button(device: Device) -> UiObject:
+    """Нажатие на кнопку 'Поделится'"""
+    logging.info(click_share_button.__doc__)
+    try:
+        return device(
+            resourceId=XmlIdEnum.MENU_SHARE,
+            className=XmlClassEnum.BUTTON,
+        ).click()
+    except Exception as error:
+        logging.error(f"Не удалось найти кнопку 'Поделится', ошибка: {error}")
+
+
+def click_copy_button(device: Device) -> UiObject:
+    """Нажатие на кнопку 'Копировать'"""
+    logging.info(click_copy_button.__doc__)
+    try:
+        return device(
+            text=StrEnum.COPY_BUTTON,
+            resourceId=XmlIdEnum.TEXT1,
+            className=XmlClassEnum.TEXT_VIEW,
+        ).click()
+    except Exception as error:
+        logging.error(f"Не удалось найти кнопку 'Копировать', ошибка: {error}")
