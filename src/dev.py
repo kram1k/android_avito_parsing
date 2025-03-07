@@ -1,45 +1,47 @@
 import flet as ft
-import logging
 
-# Настройка логирования
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+from ui.constants import TextEnum
+from ui.text import main_text
+from ui.rows import (
+    row_chat_id,
+    row_phone_id,
+    row_search_query,
+    row_buttons
+)
+
+button = ft.Button()
 
 
 def main(page: ft.Page):
-    # Текстовые поля
-    chat_id = ft.TextField(label="Идентификатор чата в Telegram")
-    serial_number = ft.TextField(
-        label="Серийный номер телефона",
-        can_reveal_password=True,
-        password=True
-    )
-    search_query = ft.TextField(label="Поисковый запрос")
+    page.title = TextEnum.MAIN_TEXT
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    column = ft.Column([
+        main_text,
+        row_chat_id,
+        row_phone_id,
+        row_search_query,
+        row_buttons
 
-    # Кнопка отправки
-    button_submit = ft.OutlinedButton("Отправить")
-
-    # Столбец для основных элементов
-    column = ft.Column(
-        controls=[
-            chat_id,
-            serial_number,
-            search_query,
-            button_submit
-        ],
+    ],
         alignment=ft.MainAxisAlignment.CENTER,
-        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-        width=500,
-        height=700,
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER
     )
+    card = ft.Card(
+            content=ft.Container(
+                content=ft.Column(
+                    [column]
+                ),
+                width=900,
+                padding=30,
+                alignment=ft.alignment.center,
+            ),
+        )
+    main_column = ft.Column([
+        card,
+    ])
+    page.add(main_column)
 
-    container = ft.Container(
-        content=column,
-        alignment=ft.alignment.center,
-        expand=True
-    )
 
-    page.add(container)
-
-
-ft.app(target=main)
+if __name__ == "__main__":
+    ft.app(main)
