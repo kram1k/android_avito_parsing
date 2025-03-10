@@ -5,7 +5,7 @@ def is_not_empty_ads(ad: dict[str, list]) -> bool:
     return False
 
 
-def is_new_ad(ad: dict[str, list], ad_id: list) -> bool:
+def is_new_ad(ad: dict[str, list], ad_id: int) -> bool:
     if ad_id in ad["id"]:
         return True
     return False

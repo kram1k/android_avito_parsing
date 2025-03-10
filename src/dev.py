@@ -6,23 +6,42 @@ from ui.rows import (
     row_chat_id,
     row_phone_id,
     row_search_query,
-    row_buttons
+)
+from ui.buttons import btn_submit
+from ui.text_fields import (
+    field_search_query,
+    field_chat_id,
+    field_phone_id
 )
 
-button = ft.Button()
-
-
+  
 def main(page: ft.Page):
+
     page.title = TextEnum.MAIN_TEXT
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
+
+    chat_id = ft.Text()
+    phone_id = ft.Text()
+    search_query = ft.Text()
+
+    def click_btn_submit(e):
+        chat_id.value = field_chat_id.value
+        phone_id.value = field_phone_id.value
+        search_query.value = field_search_query.value
+        field_search_query.value, field_phone_id.value, field_chat_id.value = (
+            "", "", ""
+        )
+        page.update()
+
+    btn_submit.on_click = click_btn_submit
+
     column = ft.Column([
         main_text,
         row_chat_id,
         row_phone_id,
         row_search_query,
-        row_buttons
-
+        btn_submit
     ],
         alignment=ft.MainAxisAlignment.CENTER,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER
