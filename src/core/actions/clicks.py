@@ -11,13 +11,13 @@ from ..constants import (
 logger_activities = logging.getLogger(__name__)
 
 
-def click_search_list_item(device: Device) -> UiObject:
+def click_search_list_item(device: Device, query: str) -> UiObject:
     """Получение элемента из поисковой выдачи"""
 
     logging.info(click_search_list_item.__doc__)
     try:
         return device(
-            text=StrEnum.SEARCH_TEXT,
+            text=query,
             resourceId=XmlIdEnum.SUGGEST_TITLE,
             className=XmlClassEnum.TEXT_VIEW,
         ).click()

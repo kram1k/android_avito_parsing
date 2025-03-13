@@ -1,5 +1,6 @@
 import logging
 import os
+import threading
 
 import flet as ft
 from dotenv import load_dotenv
@@ -13,7 +14,7 @@ from core.actions.processes import (delay_and_update_screen, fill_empty_dict,
 from core.constants import FloatEnum, StrEnum
 from core.log_config import configure_logging
 from core.validations import is_new_ad, is_not_empty_ads
-from ui.buttons import btn_submit, btn_start_stop
+from ui.buttons import btn_start_stop
 from ui.constants import TextEnum
 from ui.rows import row_chat_id, row_phone_id, row_search_query, row_btn
 from ui.text import main_text
@@ -30,6 +31,44 @@ bot = TeleBot(token=TELEGRAM_TOKEN)
 
 
 def main(page: ft.Page):
+    is_running = False
+    phone_connected = False
+    # Parsing
+
+    def parsing():
+        nonlocal phone_connected
+        advertisements = {
+            "id": [],
+            "t_pub": [],
+            }
+        while is_running:
+            if phone_connected is False:
+                phone = connect(phone_id.value)
+                phone.implicitly_wait(FloatEnum.DELAY_WIDGET)
+                phone.app_start(StrEnum.AVITO, use_monkey=True)
+                get_button_container(phone).click()
+                get_button_container(phone).set_text(search_query.value)
+                click_search_list_item(phone, search_query.value)
+                filter_setting(phone)
+                phone_connected = True
+            if is_not_empty_ads(advertisements):
+                logging.info("Список обьявлнений пуст")
+                advertisements = fill_empty_dict(phone, advertisements)
+            else:
+                logging.info("Список обьявлнений не пуст")
+                delay_and_update_screen(phone)
+                ad_id, t_pub = get_info_about_ad(phone)
+                if is_new_ad(advertisements, ad_id):
+                    logging.info("Нет нового обьявления")
+                    continue
+                else:
+                    logging.info("Новое обьявление найдено")
+                    link = parse_url(phone)
+                    message = f"Ссылка: {link}\nВремя публикации: {t_pub}"
+                    bot.send_message(message, chat_id=int(chat_id.value))
+                    advertisements = update_ad_dict(
+                        advertisements,
+                        ad_id, t_pub)
     # UI
     page.title = TextEnum.MAIN_TEXT
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
@@ -39,15 +78,10 @@ def main(page: ft.Page):
     chat_id = ft.Text()
     phone_id = ft.Text()
     search_query = ft.Text()
+    stop_event = threading.Event()
 
     def click_btn_start_stop(e):
-        if state_parsing.value == "No activite":
-            state_parsing.value = "Run parsing"
-        else:
-            state_parsing.value = "No activite"
-        page.update()
-
-    def click_btn_submit(e):
+        nonlocal is_running
         chat_id.value = field_chat_id.value
         phone_id.value = field_phone_id.value
         search_query.value = field_search_query.value
@@ -55,11 +89,19 @@ def main(page: ft.Page):
             "", "", ""
         )
         page.update()
+        if not is_running:
+            is_running = True
+            stop_event.clear()
+            threading.Thread(target=parsing, daemon=True).start()
+            btn_start_stop.text = "Stop"
+            page.update()
+        else:
+            is_running = False
+            stop_event.set()
+            btn_start_stop.text = "Start"
+            page.update()
 
     btn_start_stop.on_click = click_btn_start_stop
-    btn_submit.on_click = click_btn_submit
-    row_btn.controls.append(btn_submit)
-    row_btn.controls.append(btn_start_stop)
 
     column = ft.Column([
         main_text,
@@ -67,7 +109,8 @@ def main(page: ft.Page):
         row_phone_id,
         row_search_query,
         row_btn,
-        state_parsing
+        state_parsing,
+        btn_start_stop
     ],
         alignment=ft.MainAxisAlignment.CENTER,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER
@@ -82,40 +125,6 @@ def main(page: ft.Page):
                 alignment=ft.alignment.center,
             ),
         )
-    # Parsing
-    advertisements: dict[str, list] = {
-        "id": [],
-        "t_pub": [],
-        }
-    phone_connected = False
-    while state_parsing.value != "No activite":
-        if phone_connected is False:
-            phone = connect(phone_id)
-            phone.implicitly_wait(FloatEnum.DELAY_WIDGET)
-            phone.app_start(StrEnum.AVITO, use_monkey=True)
-            get_button_container(phone).click()
-            get_button_container(phone).set_text(search_query)
-            click_search_list_item(phone)
-            filter_setting(phone)
-            phone_connected = True
-        if is_not_empty_ads(advertisements):
-            logging.info("Список обьявлнений пуст")
-            advertisements = fill_empty_dict(phone, advertisements)
-        else:
-            logging.info("Список обьявлнений не пуст")
-            delay_and_update_screen(phone)
-            ad_id, t_pub = get_info_about_ad(phone)
-            if is_new_ad(advertisements, ad_id):
-                logging.info("Нет нового обьявления")
-                continue
-            else:
-                logging.info("Новое обьявление найдено")
-                link = parse_url(phone)
-                message = f"Ссылка: {link}\nВремя публикации: {t_pub}"
-                bot.send_message(message, chat_id=int(chat_id.value))
-                advertisements = update_ad_dict(
-                    advertisements,
-                    ad_id, t_pub)
     page.add(card_form)
 
 
