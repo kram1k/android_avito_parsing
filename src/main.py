@@ -16,7 +16,7 @@ from core.log_config import configure_logging
 from core.validations import is_new_ad, is_not_empty_ads
 from ui.buttons import btn_start_stop
 from ui.constants import TextEnum
-from ui.rows import row_chat_id, row_phone_id, row_search_query, row_btn
+from ui.rows import row_btn, row_chat_id, row_phone_id, row_search_query
 from ui.text import main_text
 from ui.text_fields import field_chat_id, field_phone_id, field_search_query
 

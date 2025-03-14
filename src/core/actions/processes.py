@@ -3,33 +3,17 @@ from time import sleep
 
 from uiautomator2 import Device, Direction
 
+from core.actions.clicks import (click_accept_button, click_button_filter,
+                                 click_copy_button, click_delete_url_in_input,
+                                 click_paste_url_in_input,
+                                 click_select_all_url, click_share_button,
+                                 click_to_announcement,
+                                 click_toggle_date_button,
+                                 long_click_to_edit_text)
+from core.actions.getters import (TimePublish, UniqueId, get_info_about_ad,
+                                  get_url_from_app_url)
 from core.actions.swipes import cords_swipe_down
-
-from core.actions.clicks import (
-    click_button_filter,
-    click_toggle_date_button,
-    click_accept_button,
-    long_click_to_edit_text,
-    click_paste_url_in_input,
-    click_select_all_url,
-    click_delete_url_in_input,
-    click_to_announcement,
-    click_share_button,
-    click_copy_button,
-)
-from core.actions.getters import (
-    get_url_from_app_url,
-    get_info_about_ad,
-    UniqueId,
-    TimePublish,
-)
-
-
-from core.constants import (
-    IntEnum,
-    StrEnum,
-    FloatEnum
-)
+from core.constants import FloatEnum, IntEnum, StrEnum
 
 
 def filter_setting(device: Device):

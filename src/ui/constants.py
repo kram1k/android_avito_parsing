@@ -1,5 +1,6 @@
 from enum import StrEnum, unique
 
+
 @unique
 class TextEnum(StrEnum):
     MAIN_TEXT = "Avito Andriod Parser"

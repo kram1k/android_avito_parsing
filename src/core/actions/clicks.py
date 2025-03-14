@@ -2,11 +2,7 @@ import logging
 
 from uiautomator2 import Device, UiObject
 
-from ..constants import (
-    StrEnum, XmlIdEnum,
-    XmlClassEnum, FloatEnum,
-    XpathEnum
-)
+from ..constants import FloatEnum, StrEnum, XmlClassEnum, XmlIdEnum, XpathEnum
 
 logger_activities = logging.getLogger(__name__)
 

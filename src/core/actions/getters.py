@@ -1,12 +1,9 @@
 import logging
 from time import sleep
 
-from uiautomator2 import Device, UiObject, Direction
+from uiautomator2 import Device, Direction, UiObject
 
-from ..constants import (
-    StrEnum, XmlIdEnum,
-    XmlClassEnum, IntEnum
-)
+from ..constants import IntEnum, StrEnum, XmlClassEnum, XmlIdEnum
 
 logger_activities = logging.getLogger(__name__)
 

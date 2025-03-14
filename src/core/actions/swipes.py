@@ -3,10 +3,7 @@ from time import sleep
 
 from uiautomator2 import Device, Direction
 
-from ..constants import (
-    IntEnum, XmlIdEnum,
-    XmlClassEnum
-)
+from ..constants import IntEnum, XmlClassEnum, XmlIdEnum
 
 
 def cords_swipe_down(device: Device) -> None:

@@ -1,11 +1,9 @@
-from time import sleep
 import logging
+from time import sleep
 
 from uiautomator2 import Device
 
-from .constants import (
-    StrEnum,
-)
+from .constants import StrEnum
 
 logger_activities = logging.getLogger(__name__)
 
