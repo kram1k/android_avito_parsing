@@ -1,3 +1,0 @@
-# AndroidAvitoParse app
-
-## DEVELOP ...
